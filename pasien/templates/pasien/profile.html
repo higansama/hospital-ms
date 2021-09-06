@@ -1,0 +1,183 @@
+{% extends "pasien/base/base.html" %}
+{% load static %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Profile</h4>
+                    <span><a href="/table-point">Jumlah Point Saat ini: 2000</a></span>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">App</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Profile</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="profile card card-body px-3 pt-3 pb-0">
+                    <div class="profile-head">
+                        <div class="photo-content">
+                            <!-- <div class="cover-photo"></div> -->
+                            <div style="margin-bottom: 50px;"></div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-photo">
+                                <img src="{{ photo_url }}" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="profile-details">
+                                <div class="profile-name px-3 pt-2">
+                                    <h4 class="text-primary mb-0"></h4>
+                                </div>
+                                <div class="profile-email px-2 pt-2">
+                                    <h4 class="text-muted mb-0"></h4>
+                                    <p>Email</p>
+                                </div>
+                                <div class="dropdown ml-auto">
+                                    <a href="#" class="btn btn-primary light sharp" data-toggle="dropdown"
+                                        aria-expanded="true"><svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"></rect>
+                                                <circle fill="#000000" cx="5" cy="12" r="2"></circle>
+                                                <circle fill="#000000" cx="12" cy="12" r="2"></circle>
+                                                <circle fill="#000000" cx="19" cy="12" r="2"></circle>
+                                            </g>
+                                        </svg></a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li class="dropdown-item"><i class="fa fa-user-circle text-primary mr-2"></i>
+                                            View profile</li>
+                                        <li class="dropdown-item"><i class="fa fa-users text-primary mr-2"></i> Add to
+                                            close friends</li>
+                                        <li class="dropdown-item"><i class="fa fa-plus text-primary mr-2"></i> Add to
+                                            group</li>
+                                        <li class="dropdown-item"><i class="fa fa-ban text-primary mr-2"></i> Block</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title"><span style="color: lightblue"><u>Detail User</u></span></h4>
+                    <a href="/cabinet/change-password">
+                        <h4 class="card-title">Ubah Password</h4>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="basic-form">
+                        <form>
+                            <div class="row col-sm-12">
+                                <div class="col-sm-4">
+                                    <style>
+                                        li {
+                                            margin-bottom: 20px;
+                                        }
+                                    </style>
+
+                                    <li><strong>No. Reg Member: </strong></br>{{ no_reg }}</br></li>
+                                    <li><strong>No. Rekam Medis: </strong></br>{{ no_reg }}</br></li>
+                                    <li><a href="{% url 'editprofile' %}" class="btn btn-info"
+                                            style="width: 200px;"><strong>Data Pribadi</strong></a></li>
+                                    <li><a href="{% url 'familypage' %}" class="btn btn-success"
+                                            style="width: 200px;"><strong>Data Keluarga</strong></a></li>
+                                    <li><a href="/cabinet/edit-profile" class="btn btn-warning"
+                                            style="width: 200px;"><strong>Riwayat Medis</strong></a></li>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="form-group row">
+                                        <label class="col-sm-5 col-form-label">Nama Lengkap</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" name="name" id="name" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-5 col-form-label">Email</label>
+                                        <div class="col-sm-7">
+                                            <input type="email" name="email" id="email" class="form-control"
+                                                placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-5 col-form-label">No. Telepon</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" name="phone" id="phone" class="form-control"
+                                                placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-5 col-form-label">Alamat</label>
+                                        <div class="col-sm-7">
+                                            <textarea style="height: 100px;" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <span class="col-sm-5 col-form-label"></span>
+                                        <div class="col-sm-7">
+                                            <button type="submit" class="btn btn-primary">Ubah</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        const token = window.localStorage.getItem('token');
+
+        $.ajax({
+            type: 'GET',
+            url: '/pasien/account/detail/',
+            dataType: 'json',
+            "headers": {
+                // "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": "Bearer " + token
+            },
+            success: function (response) {
+                // console.log('Query Success');
+                // console.log(response);
+
+                $("#name").val(response.first_name);
+                $("#email").val(response.email);
+
+            },
+            error: function (xhr, status) {
+                console.log('Gagal!' + status + xhr.toString());
+
+            }
+
+        });
+
+
+    });
+
+
+
+</script>
+
+
+
+{% endblock %}

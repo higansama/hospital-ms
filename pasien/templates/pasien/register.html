@@ -1,0 +1,111 @@
+{% extends "pasien/base/loginbase.html" %}
+{% load static %}
+{% block title %} Register User {% endblock %}
+{% block bodycontent %}
+<div class="authincation h-100">
+  <div class="container h-100">
+    <div class="row justify-content-center h-100 align-items-center">
+      <div class="col-md-6">
+        <div class="authincation-content">
+          <div class="row no-gutters">
+            <div class="col-xl-12">
+              <div class="auth-form">
+                <div class="text-center mb-3">
+                  <img src="{% static 'pasien/images/logo-full.png' %}" alt="">
+                </div>
+                <h4 class="text-center mb-4">{{ title }}</h4>
+                <div id="divError" class="bg-warning text-white">
+                  <ul id="ermsg"></ul>
+                </div>
+                <!-- <p>{{ BASE_DIR }}</p> -->
+                <form action="">
+                  <div class="form-group">
+                    <label class="mb-1"><strong>Username</strong></label>
+                    <input id="username" type="text" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="mb-1"><strong>Email</strong></label>
+                    <input id="email" type="email" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="mb-1"><strong>Password</strong></label>
+                    <input id="password" type="password" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="mb-1"><strong>Konfirmasi Password</strong></label>
+                    <input type="password" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="mb-1"><strong>NIK</strong></label>
+                    <input id="no_ktp" type="text" class="form-control">
+                  </div>
+
+                  <div class="text-center" style="margin-top: 40px">
+                    <button id="submitbutton" type="submit" class="btn btn-primary btn-block">Daftar</button>
+                    <!--                                            <a href="/cabinet" class="btn btn-primary btn-block">Register</a>-->
+                  </div>
+                </form>
+                <div class="new-account mt-3">
+                  <p>Sudah Punya Akun ? <a class="text-primary" href="{% url 'loginpasien' %}">Login</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block ajax %}
+<script>
+  $("#divError").hide();
+  let timerInterval
+
+  $("#submitbutton").click(function (e) {
+    e.preventDefault();
+    const username = $("#username").val();
+    const password = $("#password").val();
+    const no_ktp = $("#no_ktp").val();
+    const email = $("#email").val();
+
+    $.ajax({
+      type: 'POST',
+      url: '/pasien/account/list',
+      data: {
+        username: username,
+        password: password,
+        no_ktp: no_ktp,
+        email: email
+      },
+      dataType: 'JSON',
+      success: function (response) {
+        Swal.fire({
+          title: 'Registrasi Berhasil!',
+          html: '<b>Selamat</b>',
+          timer: 1500,
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          window.location.href = 'http://localhost:8000';
+        })
+        localStorage.setItem("registration", 1)
+      },
+      error: function (response) {
+        // localStorage.setItem("registration", 0)
+        // // alert(response)
+        $("#divError").show();
+        li = ""
+        dr = response["responseJSON"]
+        for (prop in dr) {
+          li += "<li>" + prop + " => " + dr[prop] + "</li>";
+        }
+        $("ul#ermsg").html(li);
+        localStorage.setItem("registration_msg", response)
+      }
+
+    });
+  })
+</script>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "pasien/base/base.html" %}
+{% load static %}
+{% block title %} Home {% endblock %}
+{% block titlebar %}
+Jadwal Dokter
+{% endblock titlebar %}
+{% block css %}
+<link href="{% static 'pasien/css/style.css' %}" rel="stylesheet">
+</link>
+{% endblock %}
+{% block content %}
+<div class="content-body">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">{{ faskes.faskes }}</h4>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-12">
+								<div class="form-group">
+									<label for="titlePoli">Poli Yang Tersedia</label>
+									<select id="titlePoli" class="custom-select form-select"></select>
+								</div>
+							</div>
+						</div>
+
+						<!-- <div class="nav flex-column nav-pills row" id="titlePoli">
+							</div> -->
+						<div class="row">
+							<div class="col-md-12 pb-2 text-right">
+								<div class="btn-group text-right " role="group" aria-label="Basic example">
+									<button type="button" class="btn btn-secondary" onclick="getWeek('prev')" data-toggle="tooltip"
+										data-placement="top" title="Pekan Sebelumnya"><span class="fa fa-chevron-left"></span></button>
+									<button type="button" class="btn btn-primary" onclick="getWeek('today')" data-toggle="tooltip"
+										data-placement="top" title="Pekan Sekarang">Hari Ini</span></button>
+									<button type="button" class="btn btn-secondary" onclick="getWeek('next')" data-toggle="tooltip"
+										data-placement="top" title="Pekan Selanjutnya"><span class="fa fa-chevron-right"></span></button>
+								</div>
+							</div>
+						</div>
+						<div id="calendar" class="row"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="mdlDetailRawatJalan">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content container">
+			<div class="modal-header">
+				<h5 class="modal-title">Detail Rawat Jalan</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div>
+			<div class="row pl-2 pt-3 ">
+				<div class="col-6 col-sm-6">No Rawat Jalan <span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="idRawatJalan"> &nbsp;</div>
+			</div>
+			<div class="row pl-2 pt-3 ">
+				<div class="col-6 col-sm-6">Nama Dokter <span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="dokter"> &nbsp;</div>
+			</div>
+			<div class="row pl-2 pt-3">
+				<div class="col-6 col-sm-6">Waktu Kunjungan <span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="waktukunjungan"></div>
+			</div>
+			<div class="row pl-2 pt-3">
+				<div class="col-6 col-sm-6">Faskes <span class="pull-right">:</span> </div>
+				<div class="col-6 col-sm-6" id="namafaskes"></div>
+			</div>
+			<div class="row pl-2 pt-3">
+				<div class="col-6 col-sm-6">Poli <span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="namapoli"></div>
+			</div>
+			<div class="row pl-2 pt-3">
+				<div class="col-6 col-sm-6">No Antrian <span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="noantrian"></div>
+			</div>
+			<div class="row pl-2 pt-3">
+				<div class="col-6 col-sm-6">Gejala<span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="gejalaResult"></div>
+			</div>
+			<div class="row">
+				<div class="col-12 text-right pb-3">
+					<button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+<!-- modal detail -->
+<div class="modal fade" id="mdldetailJadwal">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content container">
+			<div class="modal-header">
+				<h5 class="modal-title">Daftar Rawat Jalan</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div>
+			<div class="row" id="divError">
+				<ul id="ermsg"></ul>
+			</div>
+			<div class="row pl-2 pt-3 ">
+				<div class="col-6 col-sm-6">Nama Dokter <span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="namadokter"> &nbsp;</div>
+			</div>
+			<div class="row pl-2 pt-3">
+				<div class="col-6 col-sm-6">Waktu Praktek <span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="waktupraktek"></div>
+			</div>
+			<div class="row pl-2 pt-3">
+				<div class="col-6 col-sm-6">Jumlah Pasien Terdaftar <span class="pull-right">:</span> </div>
+				<div class="col-6 col-sm-6" id="jmlhpasien"></div>
+			</div>
+			<div class="row pl-2 pt-3">
+				<div class="col-6 col-sm-6">Jam Perkiraan Layanan <span class="pull-right">:</span></div>
+				<div class="col-6 col-sm-6" id="jamlayanan"></div>
+			</div>
+			<!-- form -->
+			<form id="frm-rawatjalan">
+				<div class="row pl-2 pt-3">
+					<div class="col-12">Gejala</div>
+				</div>
+				<div class="row">
+					<div class="col-12 form-group">
+						<table class="table table-borderless" style="border:0">
+							<tr>
+								<td>
+									<input type="text" name="gejala[]" class="gejala form-control" required>
+								</td>
+							</tr>
+							<tbody id="listGejala"></tbody>
+							<tr>
+								<td>
+									<a href="javascript:void(0)" class="btn btn-primary pull-right" id="addGejala" onclick=""><span
+											class="fa fa-plus"></span></a>
+								</td>
+							</tr>
+						</table>
+					</div>
+
+				</div>
+				<input type="hidden" name="tgl_kunjungan"></input>
+				<input type="hidden" name="id_jadwal"></input>
+				<input type="hidden" name="gejala"></input>
+				<input type="hidden" name="jam_kunjungan"></input> <!-- ini harusnya jam perkiraan pelayanan -->
+				<input type="hidden" name="id_poli"></input>
+				<input type="hidden" name="id_faskes"></input>
+				<div class="row">
+			</form>
+			<div class="col-12 text-right pb-3">
+				<button class="btn btn-primary" id="registerRawatJalan">Daftar Untuk Jadwal Ini</button>
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+<!-- modal detail -->
+<!-- modal appointment -->
+
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+<link rel="stylesheet" href="{% static 'pasien/vendor/fullcalendar/js/fullcalendar.min.js' %}">
+<script src="{% static 'pasien/js/pasien.js' %}"></script>
+<script src="{% static 'pasien/js/polipage.js' %}"></script>
+
+{% endblock %}

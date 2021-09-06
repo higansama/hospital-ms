@@ -1,0 +1,514 @@
+{% extends "pasien/base/base.html" %}
+{% load static %}
+{% block title %} Tambah Keluarga {% endblock %}
+
+{% block css %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+<link href="{% static 'vendor/jqvmap/css/jqvmap.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'vendor/chartist/css/chartist.min.css' %}">
+<link href="{% static 'vendor/bootstrap-select/dist/css/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="{% static 'vendor/datatables/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+
+
+
+{% endblock %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>{{ title }}</h4>
+                    <span>Kabinet</span>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Element</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-xl-12 col-lg-12" id="form1">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Data Keluarga</h4>
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Tambah
+                        Keluarga</button>
+
+                </div>
+                <div class="card-body">
+
+                    <div id="listkeluarga">
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+
+
+</div>  
+</div>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Menambahkan Keluarga</h4>
+                <div id="closemodal">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="basic-form">
+                        <div class="row">
+
+                            <div class="col-xl-12 col-lg-12" id="form1">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label>No KTP (NIK)</label>
+                                            <input name="no_ktp" type="text" class="form-control input-default">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Nama Lengkap</label>
+                                            <input name="nama_keluarga" type="text" class="form-control input-default ">
+                                        </div>
+
+                                        <!--<div class="form-group">
+											<label>Nama Depan</label>
+                                            <input name="first_name" type="text" class="form-control input-default" >
+                                        </div>
+										  <div class="form-group">
+											  <label>Nama Belakang</label>
+                                            <input name="last_name" type="text" class="form-control input-default " >
+                                        </div>-->
+
+
+                                        <div class="form-group">
+                                            <label>Hubungan Keluarga</label>
+                                            <select name="status_keluarga" id="status_keluarga"
+                                                class="form-control input-default">
+                                                <option>Pilih Hubungan ...</option>
+                                                <option value="suami">Suami</option>
+                                                <option value="istri">Istri</option>
+                                                <option value="orangtua">Orang tua</option>
+                                                <option value="anak">Anak</option>
+                                                <option value="kakak">Kakak</option>
+                                                <option value="adik">Adik</option>
+                                                <option value="sepupu">Sepupu</option>
+                                                <option value="pamanbibi">Paman / Bibi</option>
+                                                <option value="keponakan">Keponakan</option>
+                                            </select>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Jenis Kelamin</label><br>
+                                            <input type="radio" name="jenis_kelamin" value="1" checked>Laki-laki
+                                            &nbsp; <input type="radio" name="jenis_kelamin" value="0">Perempuan
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Alamat Utama</label>
+                                            <input name="alamat_utama" type="text" class="form-control input-default">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Provinsi</label>
+                                            <select id="provinsi_utama" name="provinsi_utama"
+                                                class="form-control input-default">
+                                                <option>Tentukan Provinsi</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Kota</label>
+                                            <select id="kota_utama" name="kota_utama"
+                                                class="form-control input-default">
+                                                <option>Tentukan Kota</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Kecamatan</label>
+                                            <select id="kecamatan_utama" name="kecamatan_utama"
+                                                class="form-control input-default">
+                                                <option>Tentukan Kecamatan</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Kelurahan</label>
+                                            <select id="kelurahan_utama" name="kelurahan_utama"
+                                                class="form-control input-default">
+                                                <option>Tentukan Kelurahan</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>No Asuransi (jika tidak ada ketik: 0)</label>
+                                            <input name="no_asuransi" type="text" class="form-control input-default"
+                                                required="">
+                                        </div>
+                                        Akses Akun Baru
+                                        <div class="well" style="padding: 10px;background-color: lightgoldenrodyellow">
+
+                                            <div class="form-group">
+                                                <label>Username</label>
+                                                <input name="username" type="text" class="form-control input-default ">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input name="email" type="email" class="form-control input-default ">
+                                            </div>
+                                            <!--     <div class="form-group">
+											  <label>Password</label>
+                                            <input name="password" type="password" class="form-control input-default" >
+                                        </div>
+                                        <div class="form-group">
+											  <label>Conf. Password</label>
+                                            <input name="passwordconf" type="password" class="form-control input-default" >
+                                        </div>-->
+                                        </div>
+
+
+
+
+
+                                        <div class="form-group" style="margin-top: 40px">
+                                            <button style="background-color:green;color:white"
+                                                class="btn btn-success form-control"
+                                                id="submitbuttonmodal">Submit</button>
+                                            <!--									<button type="submit" style="background-color: lightgreen" class="btn btn-success form-control">Kirim</button>-->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <script>
+                function selectRow(r) {
+                    var url = '/cabinet/daftar/' + r;
+                    window.open(url, '_blank').focus();
+                }
+
+                $(document).ready(function () {
+                    const token = window.localStorage.getItem('token');
+                    console.log(token);
+                    const username = window.localStorage.getItem('username');
+                    console.log(username);
+
+                    $("#submitbuttonmodal").click(function (e) {
+                        e.preventDefault();
+
+
+                        const token = window.localStorage.getItem('token');
+                        var username = $("input[name='username']").val();
+
+                        //    form.append("foto_identitas", fileInput.files[0], "file");
+
+                        var first_name = $("input[name='nama_keluarga']").val();
+                        var email = $("input[name='email']").val();
+                        var last_name = '';
+                        var password = '321654';
+                        var jenis_kelamin = $("input[name='jenis_kelamin']").val();
+                        var nama_keluarga = $("input[name='nama_keluarga']").val();
+                        var status_keluarga = $("#status_keluarga").val();
+                        var no_ktp = $("input[name='no_ktp']").val();
+                        var no_asuransi = $("input[name='no_asuransi']").val();
+                        var alamat_utama = $("input[name='alamat_utama]").val();
+                        var provinsi_utama = $('#provinsi_utama').val();
+                        var kota_utama = $('#kota_utama').val();
+                        var kecamatan_utama = $('#kecamatan_utama').val();
+                        var kelurahan_utama = $('#kelurahan_utama').val();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/pasien/keluarga/',
+                            data: {
+                                first_name: first_name,
+                                last_name: last_name,
+                                username: username,
+                                password: password,
+                                jenis_kelamin: jenis_kelamin,
+                                nama: nama_keluarga,
+                                hubungan_keluarga: status_keluarga,
+                                email: email,
+                                no_ktp: no_ktp,
+                                no_asuransi: no_asuransi,
+                                provinsi_utama: provinsi_utama,
+                                kota_utama: kota_utama,
+                                kecamatan_utama: kecamatan_utama,
+                                kelurahan_utama: kelurahan_utama,
+                                alamat_utama: alamat_utama
+
+                            },
+                            "headers": {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                                "Authorization": "Bearer " + token
+                            },
+
+                            success: function (response) {
+                                var len = response;
+                                if (response.hasOwnProperty('error') == false) {
+                                    console.log('Tambah Keluarga Success' + len.toString());
+                                    alert('Data Keluarga Berhasil Ditambahkan \n' + 'Untuk login gunakan username :' + username + '\n Password: 321456');
+                                    RenderListKeluarga();
+                                    $('#closemodal').find('button').trigger('click');
+                                }
+                                else {
+                                    console.log('Ada Kesalahan');
+                                    console.warn(response);
+
+                                }
+
+                                // window.location.href = '/registe r-succestrs/'+len.id ;
+
+                            },
+                            error: function (xhr, status) {
+                                console.log('Gagal!' + status + xhr.toString());
+                            }
+
+
+
+                        });
+
+
+
+
+                    })
+
+
+                })
+
+
+                function myFunctionAlamat() {
+                    // Get the checkbox
+                    var checkBox = document.getElementById("customCheckBoxAlamat");
+                    // Get the output text
+                    var text = document.getElementById("alamatdomisili");
+
+                    // If the checkbox is checked, display the output text
+                    if (checkBox.checked == true) {
+                        text.style.display = "none";
+                    } else {
+                        text.style.display = "block";
+                    }
+
+                }
+
+                function myFunctionKeluarga() {
+                    // Get the checkbox
+                    var checkBox = document.getElementById("customCheckBoxKeluarga");
+                    // Get the output text
+                    var text = document.getElementById("alamatkeluarga");
+
+                    // If the checkbox is checked, display the output text
+                    if (checkBox.checked == true) {
+                        text.style.display = "none";
+                    } else {
+                        text.style.display = "block";
+                    }
+
+                }
+
+
+
+
+            </script>
+
+
+            <script>
+                $(document).ready(function () {
+                    PilihArea('#provinsi_utama');
+                });
+
+
+                $("#provinsi_utama").change(function () {
+                    ClearArea('#kota_utama');
+                    ClearArea('#kecamatan_utama');
+                    ClearArea('#kelurahan_utama');
+                    PilihArea('#kota_utama');
+                });
+
+                $("#kota_utama").change(function () {
+                    ClearArea('#kecamatan_utama');
+                    ClearArea('#kelurahan_utama');
+                    PilihArea('#kecamatan_utama');
+                });
+
+                $("#kecamatan_utama").change(function () {
+                    ClearArea('#kelurahan_utama');
+                    PilihArea('#kelurahan_utama');
+                });
+
+
+                function ClearArea(re) {
+                    var req = re;
+                    if (req == '#kota_utama') {
+                        $(req).html('<option>Tentukan Kota</option>');
+                    } else if (req == '#kecamatan_utama') {
+                        $(req).html('<option>Tentukan Kecamatan</option>');
+                    } else if (req == '#kelurahan_utama') {
+                        $(req).html('<option>Tentukan Kelurahan</option>');
+                    }
+                }
+
+                function PilihArea(re) {
+                    var req = re; var url = '';
+                    var idprovinsi = $('#provinsi_utama').val();
+                    var idkota = $('#kota_utama').val();
+                    var idkecamatan = $('#kecamatan_utama').val();
+                    var idkelurahan = $('#kelurahan_utama').val();
+
+                    if (req == '#provinsi_utama') {
+                        url = '/global/provinsi/';
+                    }
+                    else if (req == '#kota_utama') {
+                        url = '/global/kota/?idprovinsi=' + idprovinsi;
+                    }
+                    else if (req == '#kecamatan_utama') {
+                        url = '/global/kecamatan/?idkota=' + idkota;
+                    }
+                    else if (req == '#kelurahan_utama') {
+                        url = '/global/kelurahan/?idkecamatan=' + idkecamatan;
+                    }
+
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        dataType: 'json',
+                        success: function (response) {
+                            // console.log('Query Success');
+                            // console.log(response);
+
+                            //$("#pilihfaskes").html();
+                            $.each(response, function () {
+                                //console.log(this.faskes.toString());
+                                if (req == '#provinsi_utama') {
+                                    $(req).append('<option value="' + this.id_provinsi + '">' + this.provinsi + '</option>')
+                                } else if (req == '#kota_utama') {
+                                    $(req).append('<option value="' + this.id_kota + '">' + this.kota + '</option>')
+                                } else if (req == '#kecamatan_utama') {
+                                    $(req).append('<option value="' + this.id_kecamatan + '">' + this.kecamatan + '</option>')
+                                } else if (req == '#kelurahan_utama') {
+                                    $(req).append('<option value="' + this.id_kelurahan + '">' + this.kelurahan + '</option>')
+                                }
+
+
+                            });
+
+                        },
+                        error: function (xhr, status) {
+                            console.log('Gagal!' + status + xhr.toString());
+
+                        }
+                    });
+                }
+            </script>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+    function selectRow(r) {
+        var url = '/cabinet/daftar/' + r;
+        window.open(url, '_blank').focus();
+    }
+
+    $(document).ready(function () {
+
+        const username = window.localStorage.getItem('username');
+        console.log(username);
+        RenderListKeluarga();
+
+
+
+
+    })
+
+    function RenderListKeluarga() {
+        const token = window.localStorage.getItem('token');
+        console.log(token);
+        $.ajax({
+            type: 'GET',
+            url: '/pasien/keluarga/',
+            dataType: 'json',
+            "headers": {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": "Bearer " + token
+            },
+            success: function (response) {
+                console.log('Query Success');
+                console.log(response);
+                var content;
+                var allcontent = '';
+                var jj = 1;
+
+                if (response.length != 0) {
+                    $.each(response, function () {
+                        content = '<table style="margin-bottom:20px;width: 100%" class="table-bordered table-sm">';
+                        content += '<tr><td width="30%">' + jj + '. Reg Member:' + '</td><td>  ' + this.no_reg_member + '</td></tr>';
+                        content += '<tr><td style="padding-left:20px">Username:</td><td>' + this.username + '</td></tr>';
+                        content += '<tr><td style="padding-left:20px">Nama :</td><td>' + this.nama + '</td></tr>';
+                        content += '<tr><td style="padding-left:20px">Email :</td><td>' + this.email + '</td></tr>';
+                        content += '<tr><td style="padding-left:20px">Hubungan :</td><td>' + this.hubungan_keluarga + '</td></tr>';
+                        content += '</table>';
+                        allcontent += content;
+                        jj++;
+                    });
+                }
+                else
+                    allcontent = '<p>Anda Belum Menambahkan Data Keluarga</p>';
+                $('#listkeluarga').html(allcontent);
+            },
+            error: function (xhr, status) {
+                console.log('Gagal!' + status + xhr.toString());
+            }
+        });
+    }
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+{% endblock %}

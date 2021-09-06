@@ -1,0 +1,160 @@
+{% extends 'frontdesk/base.html' %}
+{% load static %}
+{% block title %} Dashboard Frontdesk {% endblock %}
+{% block uppertitle %} Dashboard {% endblock %}
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12" id="form1">
+            <div class="card">
+                <div class="card-header">
+                    
+                
+                <h4>Rawat Jalan </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 form-group">
+                            <select id="titlePoli" class="form-control default-select"></select>
+                        </div>
+                    </div>
+                    <!-- <div class="nav flex-column nav-pills row" id="titlePoli">
+                        </div> -->
+                    <div class="row">
+                        <div class="col-md-12 pb-2 text-right">
+                            <div class="btn-group text-right " role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-secondary" onclick="getWeek('prev')"
+                                    data-toggle="tooltip" data-placement="top" title="Pekan Sebelumnya"><span
+                                        class="fa fa-chevron-left"></span></button>
+                                <button type="button" class="btn btn-primary" onclick="getWeek('today')"
+                                    data-toggle="tooltip" data-placement="top" title="Pekan Sekarang">Hari
+                                    Ini</span></button>
+                                <button type="button" class="btn btn-secondary" onclick="getWeek('next')"
+                                    data-toggle="tooltip" data-placement="top" title="Pekan Selanjutnya"><span
+                                        class="fa fa-chevron-right"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="calendar" class="row"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+
+
+</div>
+
+<!-- modal antrian rawat jalan -->
+<div class="modal" tabindex="-1" id="mdlDetailRawatJalan">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Antrian Jadwal</h5>
+
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped text-center" id="antrian">
+                    <thead>
+                        <th>Antrian</th>
+                        <th style="font-size x-small;">No Registrasi</th>
+                        <th>Nama Pasien</th>
+                        <th>Status Checkin</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal tambah rawat jalan -->
+<div class="modal" tabindex="-1" id="addRawatJalan">
+    <div class="modal-dialog modal-lg">
+        <form id="FrmAddRawatJalan">
+            <input type="hidden" name="id_jadwal" id="inpt_id_jadwal" class="form-control">
+            <input type="hidden" name="nomerantrian" id="inpt_nomerantrian" class="form-control">
+            <input type="hidden" name="titimangsa" id="inpt_titimangsa" class="form-control">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Data Rawat Jalan</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            NO KTP
+                            <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-6 form-group">
+                            <input type="text" name="no_ktp" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            Nama
+                            <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-6 form-group">
+                            <input type="text" name="nama" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            No Hp
+                            <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-6 form-group">
+                            <input type="text" name="no_ponsel" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            Jenis Kelamin
+                            <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-6 form-group">
+                            <select name="jenis_kelamin" class="form-control default-select">
+                                <option value="0">Perempuan</option>
+                                <option value="1" selected>Laki - Laki</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            Email
+                            <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-6 form-group">
+                            <input type="email" name="email" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            Gejala
+                            <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-6 form-group">
+                            <textarea name="gejala" id="gejala" class="form-control" cols="30" rows="10"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Daftarkan Data Rawat Jalan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'frontdesk/js/dashboard.js' %}"></script>
+{% endblock %}

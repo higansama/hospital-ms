@@ -1,0 +1,173 @@
+{% extends 'frontdesk/base.html' %}
+{% load static %}
+{% block title %} Faskes Frontdesk {% endblock %}
+{% block uppertitle %} Faskes {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'pasien/vendor/sweetalert2/dist/sweetalert2.min.css' %}">
+{% endblock %}
+{% block content %}
+<div class="content-body">
+	<div class="container-fluid">
+		<div class="col-xl-12 col-lg-12" id="form1">
+			<div class="card">
+				<div class="card-header">
+					<div class="col-md-3 col-xs-12 col-xl-3">
+						<button type="button" class="btn btn-primary" data-toggle="modal" id="btnAddFaskes">
+							Tambah Faskes
+							<span class="btn-icon-right"><i class="fa fa-plus"></i></span>
+						</button>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-responsive-md text-center" id="faskestable">
+							<thead>
+								<tr>
+									<th style="width:80px;"><strong>No</strong></th>
+									<th><strong>Nama Faskes</strong></th>
+									<th><strong>Alamat</strong></th>
+									<th><strong>Kota</strong></th>
+									<th><strong>#</strong></th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- row -->
+
+
+</div>
+</div>
+
+<!-- modal tambah faskes -->
+<div class="modal fade" id="formTambahFaskes" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Tambah Faskes</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="addfaskes">
+					<div class="row">
+						<div class="form-group col-12">
+							<input type="text" class="form-control" name="faskes" placeholder="Nama Faskes">
+						</div>	
+					</div>
+					<div class="row">
+						<div class="col-4">
+							Alamat <span class="pull-right">:</span>
+						</div>
+						<div class="form-group col-8">
+							<input type="text" name="alamat" id="alamat" class="form-control">
+						</div>	
+					</div>
+					<div class="row">
+						<div class="col-4">
+							Provinsi <span class="pull-right">:</span>
+						</div>
+						<div class="form-group col-8">
+							<select class="form-control" id="provinsi"></select>
+						</div>	
+					</div>
+					<div class="row">
+						<div class="col-4">
+							Kota <span class="pull-right">:</span>
+						</div>
+						<div class="form-group col-8">
+							<select class="form-control" id="kota"></select>
+						</div>	
+					</div>
+					<div class="row">
+						<div class="col-4">
+							Kecamatan <span class="pull-right">:</span>
+						</div>
+						<div class="form-group col-8">
+							<select class="form-control" id="kecamatan"></select>
+						</div>	
+					</div>
+					<div class="row">
+						<div class="col-4">
+							Kelurahan <span class="pull-right">:</span>
+						</div>
+						<div class="form-group col-8">
+							<select class="form-control" name="kelurahan" id="kelurahan"></select>
+						</div>	
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="btnsimpanfaskesbaru">Simpan Faskes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- modal detail faskes -->
+<div class="modal fade" id="modalDetailPoli" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Detail Faskes</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="detailFaskes"></div>
+				<div class="listPoli">
+					<table class="table table-striped table-hover" id="poliFaskes">
+						<thead>
+							<th>No</th>
+							<th>Nama Poli</th>
+							<th>Status</th>
+						</thead>
+						<tbody id="listPoliFaskes">
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="btnsimpanfaskesbaru">Simpan Faskes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modalAddPoli" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Tambah Poli</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id='FrmAddPoli'>
+					<div class="row">
+						<div class="col-9 form-group">
+							<input type='text' placeholder='Nama Poli' id="poliname" name='poli' class='form-control'>
+						</div>
+						<div class="col-3 form-group">
+							<button type='submit' class='btn btn-success' id='submitNewPoli'><span class='fa fa-plus'></span></button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'pasien/vendor/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+<script src="{% static 'frontdesk/js/faskespage.js' %}"></script>
+{% endblock %}

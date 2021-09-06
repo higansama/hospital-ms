@@ -1,0 +1,157 @@
+{% extends 'frontdesk/base.html' %}
+{% load static %}
+{% block title %} Rawat Jalan {% endblock %}
+{% block uppertitle %} Rawat Jalan {% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<div class="content-body">
+	<div class="col-xl-12 col-lg-12" id="form1">
+		<div class="card">
+			<div class="card-header">
+				<h3>Daftar Rawat Jalan</h3>
+				<button class="btn btn-primary pull-right" id="btnAddRawatJalan">
+					Tambah Rawat Jalan
+				</button>
+			</div>
+			<div class="card-body">
+			
+			</div>
+		</div>
+	</div>
+</div>
+<!-- row -->
+
+
+<div class="modal" tabindex="-1" role="dialog" id="addRawatJalan">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+				<form id="registerrawatjalan">
+					<div class="row container">
+						<div class="col-xs-12 col-md-12 col-xl-12">
+							<div class="form-group">
+								<label for="ktp">No KTP</label>
+								<input class="form-control form-control-sm" type="text" id="ktp" name="ktp">
+							</div>
+
+							<div class="form-group">
+								<label for="nama">Nama</label>
+								<input class="form-control form-control-sm" type="text" id="nama" name="nama">
+							</div>
+							<div class="form-group">
+								<label for="nama">No Hp</label>
+								<input class="form-control form-control-sm" type="text" id="nohp" name="nohp">
+							</div>
+							<div class="form-group">
+								<label for="nama">Email</label>
+								<input class="form-control form-control-sm" type="text" id="email" name="email">
+							</div>
+						</div>
+
+						<div class="row container">
+							<div class="col-xl-12 col-md-12 col-xs-12">
+								<div class="custom-control custom-checkbox mb-3 checkbox-info">
+									<label class="form-check-label">
+										<input type="checkbox" checked class="form-check-input" id="berobatchkd"
+											value="1">
+										Yang mendaftar adalah yang berobat
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="row container" id="fkeluarga">
+							<div class="col-sm-12 col-md-12 col-lg-12">
+								<div class="form-group">
+									<label for="nama">Nama</label>
+									<input class="form-control form-control-sm klg" type="text" id="knama" name="nama">
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="nama">Tempat Lahir</label>
+											<input class="form-control form-control-sm klg" type="text"
+												id="ktempatlahir" name="nohp">
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="nama">Tanggal Lahir</label>
+											<input class="form-control form-control-sm klg" type="date" id="ktgllahir"
+												name="tgllahir">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="hubungan">Hubungan Dengan Pasien</label>
+									<input class="form-control form-control-sm klg" type="text" id="khubungan"
+										name="hubungan">
+								</div>
+							</div>
+						</div>
+
+						<!-- pilih jadwal dokter -->
+						<div class="row container">
+							<div class="col-xs-6 col-md-6 col-xl-6">
+								<div class="form-group">
+									<label for="nama">Faskes</label>
+									<input class="form-control form-control-sm" type="text" id="namafaskes"
+										name="namafaskes" readonly>
+								</div>
+								<div class="form-group">
+									<label>Poli</label>
+									<select class="form-control default-select" id="listpoli">
+										<option selected>Pilih Poli</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Pilih Dokter</label>
+									<select class="form-control" id="listdokter">
+										<option selected>Pilih Dokter</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="tglkunjungan">Tanggal Kunjungan</label>
+									<input class="form-control form-control-sm" type="date" id="tglkunjungan"
+										name="tglkunjungan">
+								</div>
+								<div class="form-group" id="jadwaljam">
+									<h5>Jadwal Dokter</h5>
+									<div id="cbjadwal" ></div>
+								</div>
+
+							</div>
+						</div>
+						<div class="row container">
+							<div class="col-xl-12 col-md-12 col-xs-12 ">
+								<div class="float-right">
+									<button type="submit" class="btn btn-primary">Daftar</button>
+								</div>
+							</div>
+						</div>
+				</form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+{% block js %}
+<script src="{% static 'frontdesk/js/rawatjalan.js' %}"></script>
+
+{% endblock %}
+
+{% endblock %}

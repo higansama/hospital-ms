@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+
+<!-- Mirrored from mediqu.dexignzone.com/xhtml/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 Feb 2021 22:53:47 GMT -->
+
+<head>
+	{% load static %}
+	<!--       <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<title>Sundareka - Golden Hour</title>
+	<!-- Favicon icon -->
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'pasien/images/favicon.png' %}">
+	<!-- <link href="{% static 'pasien/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' %}" rel="stylesheet"> -->
+	<link href="{% static 'pasien/css/style.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'pasien/vendor/sweetalert2/dist/sweetalert2.min.css' %}">
+	<script src="{% static 'pasien/vendor/sweetalert2/dist/sweetalert2.min.js' %}"></script>
+
+</head>
+
+
+<body class="h-100">
+	{% block bodycontent %}
+	<div class="authincation h-100">
+		<div class="container h-100">
+			<div class="row justify-content-center h-100 align-items-center">
+				<div class="col-md-6">
+					<div class="authincation-content">
+						<div class="row no-gutters">
+							<div class="col-xl-12">
+								<div class="auth-form">
+									<div class="text-center mb-3">
+										<img src="{% static 'pasien/images/logo-full.png' %}" alt="">
+									</div>
+									<h4 class="text-center mb-4">{{ title }}</h4>
+
+									<div class="text-center mb-3">
+										<span id="errorwarning" class="text-center mb-4" style="color: red;text-align: center"></span>
+									</div>
+
+									<!-- <p>{{ BASE_DIR }}</p> -->
+									<form>
+										<div class="form-group">
+											<label class="mb-1"><strong>Username</strong></label>
+											<input type="text" class="form-control" id="username">
+										</div>
+										<div class="form-group">
+											<label class="mb-1"><strong>Password</strong></label>
+											<input type="password" class="form-control" value="Password" id="password">
+										</div>
+										<div class="form-row d-flex justify-content-between mt-4 mb-2">
+											<div class="form-group">
+												<div class="custom-control custom-checkbox ml-1">
+													<input type="checkbox" class="custom-control-input" id="password">
+													<label class="custom-control-label" for="basic_checkbox_1">Remember
+														my preference</label>
+												</div>
+											</div>
+											<div class="form-group">
+												<a href="/forgot-password">Forgot Password?</a>
+											</div>
+										</div>
+										<div class="text-center">
+											<button id="submitbutton" type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+											<!--                                            <a href="/cabinet" class="btn btn-primary btn-block" id="submitbutton">Log in</a>-->
+										</div>
+									</form>
+									<div class="new-account mt-3">
+										<p>Don't have an account? <a class="text-primary" href="/register-member">Sign
+												up</a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endblock %}
+
+	{% block ajax %}
+	<script>
+		$("#submitbutton").click(function (e) {
+			e.preventDefault();
+			const username = $("#username").val();
+			const password = $("#password").val();
+
+			$.ajax({
+				type: 'POST',
+				url: '/login/user/',
+				data: {
+					username: username,
+					password: password,
+				},
+				dataType: 'json',
+				success: function (response) {
+					var len = response;
+					console.log('Login Success');
+					
+					$("#errorwarning").html('');
+					window.location.href = '/cabinet';
+
+				},
+				error: function (xhr, status) {
+					console.log('Gagal!' + status + xhr.toString());
+					$("#errorwarning").html('LOGIN FAILED!! ' + xhr.statusText);
+				}
+
+			});
+		})
+	</script>
+	{% endblock %}
+
+
+	<!--**********************************
+        Scripts
+    ***********************************-->
+	<!-- Required vendors -->
+	<script src="{% static 'pasien/vendor/global/global.min.js' %}"></script>
+	<!-- <script src="{% static 'pasien/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script> -->
+	<script src="{% static 'pasien/js/custom.min.js' %}"></script>
+	<script src="{% static 'pasien/js/deznav-init.js' %}"></script>
+
+
+
+
+
+</body>
+
+<!-- Mirrored from mediqu.dexignzone.com/xhtml/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 Feb 2021 22:53:47 GMT -->
+
+</html>

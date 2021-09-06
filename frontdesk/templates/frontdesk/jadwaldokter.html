@@ -1,0 +1,124 @@
+{% extends 'frontdesk/base.html' %}
+{% load static %}
+{% block title %} Jadwal Dokter {% endblock %}
+{% block uppertitle %} Jadwal Dokter {% endblock %}
+
+{% block content %}
+<div class="content-body">
+	<div class="container-fluid">
+		<div class="col-xl-12 col-lg-12" id="form1">
+			<div class="card">
+				<div class="card-header">
+					<div class="row">
+						<div class="col-12" id="msg"></div>
+					</div>
+					<div class="pull-right">
+						<button class="btn btn-primary" id="addJadwal">Tambah Jadwal Dokter</button>
+					</div>
+
+				</div>
+				<div class="card-body">
+					<div class="row text-center">
+						<div class="col-6 form-group">
+							<select name="poli" id="listpoli" class="form-control"></select>
+						</div>
+						<div class="col-6 form-group">
+							<div class="btn-group" role="group" aria-label="Basic example">
+								<button type="button" class="btn btn-secondary btnWeek" data-week="prev">Pekan Lalu</button>
+								<button type="button" class="btn btn-primary btnWeek" data-week="now">Hari Ini</button>
+								<button type="button" class="btn btn-secondary btnWeek" data-week="next">Pekan Depan</button>
+							</div>
+						</div>
+					</div>
+					<div class="row " id="jadwal">
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- row -->
+
+
+</div>
+</div>
+
+<!-- modal tambah jadwal -->
+<div class="modal" id="modalTambahJadwal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Tambah Jadwal Dokter</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<form id="addJadwalDokter">
+					<input type="hidden" name="id_faskes" id="idfaskes">
+					<div class="row">
+						<div class="col-4">
+							Poli
+							<span class="pull-right">:</span>
+						</div>
+						<div class="col-6 form-group">
+							<select name="id_poli" id="datapoli" class="form-control"></select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							Dokter
+							<span class="pull-right">:</span>
+						</div>
+						<div class="col-6 form-group">
+							<select name="no_reg_dokter" id="dokter" class="form-control"></select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							Hari
+							<span class="pull-right">:</span>
+						</div>
+						<div class="col-6 form-group">
+							<select name="jadwal_praktek" id="hari" class="form-control">
+								<option value="0">Minggu</option>
+								<option value="1">Senin</option>
+								<option value="2">Selasa</option>
+								<option value="3">Rabu</option>
+								<option value="4">Kamis</option>
+								<option value="5">Jumat</option>
+								<option value="6">Sabtu</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							Waktu
+							<span class="pull-right">:</span>
+						</div>
+						<div class="col-3 form-group">
+							<input class="form-control" type="text" name="jam_mulai" id="jammulai" placeholder="Jam Mulai" required>
+						</div>
+						<div class="col-3 form-group">
+							<input class="form-control" type="text" name="jam_selesai" id="jamselesai" placeholder="Jam Selesai"
+								required>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 text-right">
+							<button type="submit" class="btn btn-primary" id="btnSubmitAdd">Tambah jadwal</button>
+							<button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'frontdesk/js/jadwal.js' %}"></script>
+{% endblock js %}

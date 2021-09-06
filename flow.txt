@@ -1,0 +1,154 @@
+Flow Daftar Rawat jalan
+1. Pasien 
+    A. Daftar Baru statusnya = 1[New]              [done]
+    B. Edit Jadwal Kunjungan = 2[Edit Jadwal Kunjungan]
+    C. Edit Dokter = 3[Cancel Kunjungan Untuk Dokter yang dipilih sebelumnya] - pengurangan point untuk Pasien
+    D. Cancel Kunjungan = 4[Cancel kunjungan ] - pengurangan point
+
+2. Dokter
+    A. List Pasieun Yang Booking Jadwal
+    B. Dokter Edit Booking Jadwal Pasien [Tambah field alasan] status = 1[Edit Jadwal]
+    C. Dokter Cancel Booking Jadwal Pasien [Harus mengisi alasan] status = 2[Cancel Jadwal] - pengurangan point untuk Dokter
+
+0. Super Admin
+1. Pasien
+2. Dokter
+3. Perawat
+4. Staff/Admin
+5. Keluarga
+
+
+-----------------------------------------
+Note 24/04/21
+1. POST http://localhost:8000/praktek/admission/
+    Tambah field rencana jam kunjungan              [done]
+2. POST http://localhost:8000/praktek/admission/
+    Field status ubah jadi tinyInt, ikut format diatas               [done]
+3. POST http://localhost:8000/praktek/admission/
+    Ketika ada antrian dengan status CANCEL, maka nomer urutan antrian di reset               [done]
+4. PUT http://localhost:8000/praktek/admission/                                                 [done]
+    Tambahan request variable last_id_admission_rawat_jalan
+    Backend update daftar rawat jalan pasien (berhubungan No 1 BCD di Flow rawat jalan diatas)
+        a. Bila pasien ubah FASKES, maka rawat jalan di faskes yang lama akan CANCEL secara otomatis dan nomer antrian akan ter-reset
+        b. Bila faskes masih sama, pasien ubah poli, maka pasien ubah dokter, dan ubah jadwal kunjungannya. Nomer antrian di dokter lama ter-reset dan mendapatakn nomer antrian baru di dokter yang baru.
+        c. Bila faskes masih sama, poli masih sama, pasien ubah dokter, dan ubah jadwal kunjungannya. Nomer antrian di dokter lama ter-reset dan mendapatakn nomer antrian baru di dokter yang baru.
+        d. Bila faskes masih sama, poli masih sama, dokter masih sama dan pasien hanya ubah kunjungan, maka nomer antrian di jadwal lama di dokter tersebut akan ter reset dan nomer antrian yang baru di jam yang baru akan tersimpan.
+5. Cari Faskes terdekatx
+    a. Alamat Fakses harus lengkap Kota [Add New Field Kota]                        
+--------------------------------------------
+Note 27/04/21:
+    1. Edit jadwal kunjungan dokter [done]
+    2. Edit jadwal kunjungan pasien [tinggal pasang]
+
+--------------------------------------------
+Note 3/05/2021:
+Next Untuk tanggal 7/5/2021:
+    1. Restrukturisasi [done]
+    2. Autentikasi [diskusi] done
+    3. Kerjain yang belum dikerjain di atas
+
+
+
+
+{
+    {"refresh_token": "askdka;lskdlas"},
+    {"access_token": "kasjdkajskdajsdkas"}
+
+}
+
+
+
+# create API jadwal dokter perpoli
+# create API detail jadwal dokter pertanggal
+# create API list pasien yang sudah ambil jadwal[Jam] dokter tersebut 
+
+
+GER API :   /no_faskes
+Response : [ Poli , Poli..]
+GET API :   /idpoli
+RESPONSE : [ tableJadwalDokter]
+
+
+=========================================
+kerjain besok!:
+1. Register rawat jalan, hitung waktu perhitungan jam pelayanan
+2. [POST] list/jadwal/dokter/byid/<str:iddokter>' untuk get data jam berapa aja dia kosong
+3. API Keluarga harus done [done]
+4. API Keluarga register ada perubahan sekalian add user [done]
+
+frontdesk:
+1. Register Rawat jalan
+2. Input Jadwal Dokter
+3. Presensi Jadwal Dokter
+
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+
+
+
+=================================================
+actor:
+1. Pasien
+    1. [Rapihin Lagi] Profile
+    2. [Buat Baru] Register Rawat Jalan
+    3. [Rapihin Lagi] Page Keluarga
+    4. [Rapihin Lagi] Dashboard Pasien
+    5. [Rapihin Lagi] Bahasa Menu
+    6. [Rapihin Lagi] Footer pindahin ke bawah
+2. Admin Frontdesk
+    1. [Buat Halaman] Rawat Jalan
+    2. [Buat Halaman] Register Pasien
+    3. [BE] Jika register rawat jalan secara langsung, maka tombol checkin langsung enable
+    4. [Buat Prosedure] Tombol checkin hanya tersedia ketika 15 menit sebelum jam kunjungan pasien.
+    5. [Buat Halaman] input jadwal dokter dan validasi jadwal dokter yang di input jadwal dokter
+    6. [Buat Prosedure] Tombol checkin dokter.
+3. Dokter
+4. Perawat
+
+
+
+
+
+====================================================
+Table Ketentuan point
+Level 1 [update profile,] => 100
+
+
+Add Keluarga samakan dengan signup user biasa + hubungan keluarga + nambah point[500]
+Notifikasi setiap situasi rawat jalan
+
+import numpy
+import datetime
+base = datetime.datetime(2021, 7, 4)
+arr = numpy.array([base + datetime.timedelta(days=i) for i in range(30)])
+
+===============================================================
+Jumlah Poin dibutuhan pada saat:
+1. register user pasien pertama kali +500 poin
+2. register data pribadi pasien +500 poin
+3. register rawat jalan pasien +500 poin
+4. cancel register rawat jalan -500 poin
+
+
+admision 10 [x]
+antrian 5   [x]
+
+//Creation:
+screen -S some_name proc
+// Kill detached session
+screen -S some_name -X quit-
+
+
+admin frontdesk
+  - daftarin pasien baru
+  - daftarin rawat jalan
+  - dokter
+    - input jadwal praktek dokter
+    - input jadwal kunjungan [in/out]
+
+superadmin
+  - crud admin frontdesk
+  - crud dokter
+  - crud faskes
+  - crud poli
+  - crud perawat

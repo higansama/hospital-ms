@@ -1,0 +1,211 @@
+{% extends "pasien/base/base.html" %}
+{% load static %}
+{% block titlebar %} Home {% endblock titlebar %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<div class="content-body">
+	<div class="container-fluid">
+		<div class="row page-titles mx-0">
+			<div class="col-sm-6 p-md-0">
+				<div class="welcome-text">
+					<span><a href="{% url 'profile' %}">Jumlah Point Saat ini: {{ total_point }}</a></span>
+				</div>
+			</div>
+		</div>
+		<!-- row -->
+
+
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">Riwayat Kunjungan <br>
+						</h4>
+					</div>
+					<div class="card-body">
+						<div class="table-responsive">
+							<div class="table-responsive">
+
+								<table class="table table-responsive-md" onload="GetRiwayatRawatJalan()">
+									<thead>
+										<tr>
+											<th>Tanggal Daftar</th>
+											<th>Waktu Kunjungan</th>
+											<th>Faskes</th>
+											<th>Poli</th>
+											<th>Dokter</th>
+											<th>Status</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody style="font-size:small;" >
+										{% if page_obj|length == 0 %}
+										<tr>
+											<td colspan="8" style="background-color: darkmagenta; text-align: center; color:wheat">
+												Belum Ada Riwayat Rawat Jalan</td>
+										</tr>
+										{% else %}
+										{% for history in page_obj %}
+										<tr>
+											<td>{{ history.date_created }}</td>
+											<td>{{ history.tgl_kunjungan }} &nbsp; {{ history.jam_kunjungan }}</td>
+											<td>{{ history.id_faskes.faskes }}</td>
+											<td>{{ history.id_poli.poli }}</td>
+											<td>dr. {{ history.no_reg_dokter.nama }}</td>
+											<td>
+												{% if history.status == "1" %}
+												Baru Dibuat
+												{% elif history.status == "3" %}
+												Dibatalkan Oleh Siapa
+												{% elif history.status == "4" %}
+												Dibatalkan Oleh Pasien
+												{% else %}
+												Unknown
+												{% endif %}
+											</td>
+											<td>
+												<button class="btn btn-primary" onclick="getDetailRawatJalan({{ history.id }})">Detail</button>
+											</td>
+										</tr>
+										{% endfor %}
+										{% endif %}
+									</tbody>
+								</table>
+								<div class="pagination">
+									<span class="step-links">
+										{% if page_obj.has_previous %}
+										<a href="?page=1">&laquo;</a>
+										<a href="?page={{ page_obj.previous_page_number }}">Sebelumnya</a>
+										{% endif %}
+										<span class="current">
+											Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+										</span>
+
+										{% if page_obj.has_next %}
+										<a href="?page={{ page_obj.next_page_number }}">next</a>
+										<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+										{% endif %}
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="dtlRawatJalan">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="idadmission"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-6">Nama Dokter
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="namadokter">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-6">
+						Tanggal Kunjungan
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="tgl_kunjungan">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-6">
+						Jam Kunjungan
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="jam_kunjungan">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-6">
+						Faskes
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="faskes">
+					</div>
+				</div>
+<!-- 
+				<div class="row">
+					<div class="col-6">
+						Alamat Faskes
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="alamat_faskes">
+					</div>
+				</div> -->
+
+				<div class="row">
+					<div class="col-6">
+						Poli
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="poli">
+					</div>
+				</div>
+<!-- 
+				<div class="row">
+					<div class="col-6">
+						Didaftarkan Oleh
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="is_created_by_staff">
+					</div>
+				</div> -->
+
+				<div class="row">
+					<div class="col-6">
+						Nomer antrian
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="no_antrian">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-6">
+						Gejala
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="gejala">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-6">
+						Status
+						<span class="pull-right">:</span>
+					</div>
+					<div class="col-6" id="status">
+					</div>
+				</div>
+				<button type="button" class="btn btn-danger pull-right" id="batalkan">Batalkan</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% block js %}
+<script src="{% static 'pasien/js/dashboard.js' %}"></script>
+{% endblock %}
+
+{% endblock %}

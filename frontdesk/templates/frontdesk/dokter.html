@@ -1,0 +1,120 @@
+{% extends 'frontdesk/base.html' %}
+{% load static %}
+{% block title %} Faskes Frontdesk {% endblock %}
+{% block uppertitle %} Page {% endblock %}
+
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="col-xl-12 col-lg-12" id="form1">
+            <div class="card">
+                <div class="card-header">
+                    Dokter
+                    <button class="btn btn-primary pull-right" id="addDokter">Tambah Dokter &nbsp;<span
+                            class="fa fa-plus"></span></button>
+                </div>
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- row -->
+
+
+</div>
+</div>
+
+
+
+
+<div class="modal fade" id="modalAddDokter" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Dokter</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id='FrmAddPoli'>
+                    <div class="row">
+                        <div class="col-3" style="text-transform:capitalize;">
+                            username <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-9 form-group">
+                            <input type="text" required name="username" id="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3" style="text-transform:capitalize;">
+                            nama <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-9 form-group">
+                            <input type="text" required name="nama" id="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3" style="text-transform:capitalize;">
+                            password <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-9 form-group">
+                            <input type="text" required name="password" placeholder="123456" disabled class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3" style="text-transform:capitalize;">
+                            email <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-9 form-group">
+                            <input type="email" name="email" id="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3" style="text-transform:capitalize;">
+                            NIK <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-9 form-group">
+                            <input type="text" required name="no_ktp" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3" style="text-transform:capitalize;">
+                            no telepon <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-9 form-group">
+                            <input type="text" required name="no_telepon" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3" style="text-transform:capitalize;">
+                            id faskes <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-9 form-group">
+                            <select name="id_faskes" class="form-control" id="id_faskes"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3" style="text-transform:capitalize;">
+                            id poli <span class="pull-right">:</span>
+                        </div>
+                        <div class="col-9 form-group">
+                            <select name="id_poli" id="id_poli" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-right">
+                            <button class="btn btn-primary" type="submit">Daftarkan Dokter</button>
+                            <button class="btn btn-secondary" type="reset"  data-dismiss="modal">Batalkan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'frontdesk/js/dokter.js' %}"></script>
+{% endblock js %}

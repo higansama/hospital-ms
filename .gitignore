@@ -1,0 +1,14 @@
+*/__pycache__
+/__pycache__/
+*/migrations
+*.ipynb_checkpoints
+*.jpg
+.pyc
+*.pyc
+.idea/
+branch_git
+goldenhour/settings.py
+.jpg
+venv/
+.vscode/    
+.png

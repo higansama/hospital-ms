@@ -1,0 +1,268 @@
+{% extends "pasien/base/base.html" %}
+{% load static %}
+{% block title %} Edit Profile {% endblock %}
+
+{% block css %}
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+<!-- Favicon icon -->
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+<link href="{% static 'pasien/vendor/jqvmap/css/jqvmap.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'pasien/vendor/chartist/css/chartist.min.css' %}">
+<link href="{% static 'pasien/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'pasien/css/style.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+<style>
+    .datepicker-days table .disabled-date.day {
+        background-color: maroon;
+        color: #fff;
+    }
+
+    .datepicker table tr td.disabled,
+    .datepicker table tr td.disabled:hover {
+        background: #8447c2;
+        color: #fff;
+    }
+</style>
+
+
+
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <form>
+            <div class="basic-form">
+                <div class="row">
+
+                    <div class="col-xl-6 col-lg-6" id="form1">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Informasi Umum</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="form-group">
+                                    <label>NIK / No. KTP</label>
+                                    <input name="no_ktp" type="text" class="form-control input-default ">
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Lengkap</label>
+                                    <input name="nama" type="text" class="form-control input-default">
+                                </div>
+                                <div class="form-group">
+                                    <label>No. Telepon</label>
+                                    <input name="no_telepon" type="text" class="form-control input-default">
+                                </div>
+                                <div class="form-group">
+                                    <label>Profesi</label>
+                                    <input name="profesi" type="text" class="form-control input-default">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tingkat Pendidikan</label>
+                                    <select name="tingkat_pendidikan" id="tingkat_pendidikan"
+                                        class="form-control input-default">
+                                        <option>Pilih Pendidikan</option>
+                                        <option value="SD">SD</option>
+                                        <option value="SMP">SMP</option>
+                                        <option value="SMA">SMA</option>
+                                        <option value="D1">D1</option>
+                                        <option value="D2">D2</option>
+                                        <option value="D3">D3</option>
+                                        <option value="S1">S1</option>
+                                        <option value="S2">S2</option>
+                                        <option value="S3">S3</option>
+                                        <option value="Lain">Lain</option>
+                                    </select>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Alamat Utama</label>
+                                    <input name="alamat_utama" type="text" class="form-control input-default">
+                                </div>
+                                <div class="form-group">
+                                    <label>Provinsi</label>
+                                    <select id="provinsi_utama" name="provinsi_utama"
+                                        class="form-control input-default">
+                                        <option>Tentukan Provinsi</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kota</label>
+                                    <select id="kota_utama" name="kota_utama" class="form-control input-default">
+                                        <option>Tentukan Kota</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kecamatan</label>
+                                    <select id="kecamatan_utama" name="kecamatan_utama"
+                                        class="form-control input-default">
+                                        <option>Tentukan Kecamatan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kelurahan</label>
+                                    <select id="kelurahan_utama" name="kelurahan_utama"
+                                        class="form-control input-default">
+                                        <option>Tentukan Kelurahan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kode POS</label>
+                                    <input name="kodepos_utama" type="text" class="form-control input-default">
+                                </div>
+
+                                <span style="padding: 40px;"></span>
+                                <div class="custom-control custom-checkbox mb-3">
+                                    <input type="checkbox" class="custom-control-input" id="customCheckBoxAlamat"
+                                        onclick="myFunctionAlamat()">
+                                    <label class="custom-control-label" for="customCheckBoxAlamat">Alamat Domisili Sama
+                                        Dengan Alamat Utama?</label>
+                                </div>
+
+                                <div id="alamatdomisili">
+
+
+                                    <div class="form-group">
+                                        <label>Alamat domisili</label>
+                                        <input name="alamat_domisili" type="text" class="form-control input-default">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Provinsi Domisili</label>
+                                        <select id="provinsi_domisili" name="provinsi_domisili"
+                                            class="form-control input-default">
+                                            <option>Tentukan Provinsi</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Kota Domisili</label>
+                                        <select id="kota_domisili" name="kota_domisili"
+                                            class="form-control input-default">
+                                            <option>Tentukan Kota</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Kecamatan Domisili</label>
+                                        <select id="kecamatan_domisili" name="kecamatan_domisili"
+                                            class="form-control input-default">
+                                            <option>Tentukan Kecamatan</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Kelurahan Domisili</label>
+                                        <select id="kelurahan_domisili" name="kelurahan_domisili"
+                                            class="form-control input-default">
+                                            <option>Tentukan Kelurahan</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Kode POS Domisili</label>
+                                        <input name="kodepos_domisili" type="text" class="form-control input-default">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6" id="formdatapribadi">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Data Pribadi</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Tempat Lahir</label>
+                                    <input type="text" name="tempat_lahir" class="form-control input-default ">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tanggal Lahir</label>
+                                    <input type="text" name="tgl_lahir" class="form-control input-default "
+                                        placeholder="pilih tanggal" id="formtanggal" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Jenis Kelamin</label><br>
+                                    <input type="radio" name="jenis_kelamin" value="1" checked>Laki-laki
+                                    &nbsp; <input type="radio" name="jenis_kelamin" value="0">Perempuan
+                                </div>
+                                <div class="form-group">
+                                    <label>Nomor Asuransi</label>
+                                    <input name="no_asuransi" type="text" class="form-control input-default ">
+                                </div>
+                                <div class="form-group">
+                                    <label>Upload Foto</label>
+                                    <input type="file" id="foto_identitas" name="foto_identitas"
+                                        class="form-control input-default " multiple>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6" id="form2">
+                        <div class="card">
+
+                            <div class="card-body">
+                                <div class="row ">
+                                    <button type="submit" style="background-color:green;color:white"
+                                        class="btn btn-success form-control" value="Kirim"
+                                        id="submitbutton">Update</button>
+                                    <!--									<button type="submit" style="background-color: lightgreen" class="btn btn-success form-control">Kirim</button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+<!-- Required pasien/vendors -->
+<script src="{% static 'pasien/js/pasien.js' %}"></script>
+<script src="{% static 'pasien/js/editprofile.js' %}"></script>
+
+
+<!--	&lt;!&ndash; Dashboard 1 &ndash;&gt;-->
+
+
+
+
+
+
+
+
+
+{% endblock %}

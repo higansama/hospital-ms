@@ -1,0 +1,697 @@
+{% extends "pasien/base/base.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'pasien/vendor/select2/css/select2.min.css' %}">
+
+{% endblock css %}
+{% block title %} Profile {% endblock %} {% block titlebar %}
+Profile {% endblock %} {% block content %}
+<div class="content-body">
+	<div class="container-fluid">
+		<!-- row -->
+		<div class="row">
+
+		</div>
+		<div class="row">
+			<!-- Left Panel -->
+			<div class="col-xl-3">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								{% if pasien.foto_identitas != "" %}
+								<input type="image" src="/media/{{ pasien.foto_identitas }}" class="mr-3 rounded" height="100"
+									id="profilephoto" style='height: 100%; width: 100%; object-fit: contain'>
+								{% else %}
+								<input type="image" src="{{ pasien.foto_identitas }}" class="mr-3 rounded" height="100"
+									id="profilephoto" style='height: 100%; width: 100%; object-fit: contain'>
+								{% endif %}
+								<button class="btn btn-primary" id="gantiphoto" onchange="onload(event)">Ganti Photo Profile</button>
+								<input type="file" id="photoidentitas" style="display: none;" />
+							</div>
+
+						</div>
+						<div class="text-center">
+							<h5 class="text-primary d-inline" id="fullname"></h5>
+						</div>
+						<br>
+						<div class="row pt-4 ">
+							<div class="col-md-12">
+								<p style="font-size: smaller;">Point Anda {{ data.point.total }} point <a href="" id="gethistorypoint"
+										style="font-size: smaller;"><span class="flaticon-381-bookmark-1"></span></a></p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!-- Right Panel -->
+			<div class="col-xl-9  col-xs-12">
+				<div class="card">
+					<div class="row text-center" style="color: white;">
+						<div class="col-md-12 bg-success" id="successMsg">
+						</div>
+						<div class="col-md-12 bg-danger" id="failMsg">
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="profile-tab">
+							<div class="custom-tab-1">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"><a href="#rekammedis" style="margin-right: 0 !important" data-toggle="tab"
+											class="nav-link active show">Riwayat
+											Kesehatan</a>
+									</li>
+									<li class="nav-item"><a href="#about-me" style="margin-right: 0 !important" data-toggle="tab"
+											class="nav-link">Data Pribadi</a>
+									</li>
+									<li class="nav-item"><a href="#profile-settings" style="margin-right: 0 !important" data-toggle="tab"
+											class="nav-link">Data Akun</a>
+									</li>
+									<li class="nav-item"><a href="#family" style="margin-right: 0 !important" id="btnkeluarga"
+											data-toggle="tab" class="nav-link">Keluarga</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<!-- konten rekam medis -->
+									<div id="rekammedis" class="tab-pane fade active show">
+										<div class="my-post-content pt-3">
+											<table style="font-size: small;" id="riwayatmedis"
+												class="table header-border verticle-middle table-striped table-responsive-sm">
+												<thead>
+													<th>No</th>
+													<th>Diagnosa</th>
+													<th>Dokter</th>
+													<th>Tanggal</th>
+													<th>Keterangan</th>
+												</thead>
+												<tbody>
+													{% for rm in data.rekammedis.data %} {% if rm.no_rekam_medis != "" %}
+													<tr>
+														<td>{{ rm.no_rekam_medis }}</td>
+														<td>{{ rm.diagnosa }}</td>
+														<td>dr. {{ rm.no_reg_dokter.nama }}</td>
+														<td>{{ rm.tgl_pengobatan }}</td>
+														<td><a href='' class='detailrm' data-id="{{ rm.id }}"
+																data-target="modalDetailRekamMedis"><span class="flaticon-381-focus"></span></a></td>
+													</tr>
+													{% endif %} {% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<!-- konten rekam medis stop -->
+									<!-- konten data pribadi -->
+									<div id="about-me" class="tab-pane fade">
+										<div class="profile-personal-info">
+											<br>
+											<form id="frmProfile">
+												<div id="profile">
+													<div id="pribadi">
+														<div class="row">
+															<input type="hidden" name="username" value="{{ pasien.username }}">
+															<div class="col-sm-6 col-6">
+																Nama Lengkap<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="personal form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="nama" name="nama"
+																	readonly>
+																<input class="personal form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden" id="is_active"
+																	name="is_active" value="1">
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Nomor KTP<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="personal form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="no_ktp"
+																	name="no_ktp" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Nomor Asuransi<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="personal form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="no_asuransi"
+																	name="no_asuransi" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Tempat Lahir<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="personal form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="tempat_lahir"
+																	name="tempat_lahir" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Tanggal Lahir<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="personal form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="date" id="tgl_lahir"
+																	name="tgl_lahir" readonly>
+															</div>
+														</div>
+
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Nomer Telepon<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="account form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="no_telepon"
+																	name="no_telepon" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Nomer Ponsel<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="account form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="no_ponsel"
+																	name="no_ponsel" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-md-12 text-right">
+																<a href="#" class="btn btn-primary" id="personalEdit">Edit Data Pribadi</a>
+																<a href="#" class="btn btn-success bareng" id="simpanPersonal">Simpan Data Pribadi</a>
+																<a href="#" class="btn btn-danger bareng" id="cancelPersonal">Batal</a>
+															</div>
+														</div>
+
+													</div>
+													<!-- Data Domisili Start -->
+													<hr>
+													<div id="data-domisili">
+														<h5>
+															Data Alamat Domisili
+														</h5>
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Provinsi<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text"
+																	id="nama_provinsi_domisili" name="nama_provinsi_domisili" readonly>
+
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden"
+																	id="provinsi_domisili" name="provinsi_domisili" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Kota<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text"
+																	id="nama_kota_domisili" name="nama_kota_domisili" readonly>
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden" id="kota_domisili"
+																	name="kota_domisili" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Kecamatan<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text"
+																	id="nama_kecamatan_domisili" name="nama_kecamatan_domisili" readonly>
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden"
+																	id="kecamatan_domisili" name="kecamatan_domisili" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Kelurahan<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text"
+																	id="nama_kelurahan_domisili" name="nama_kelurahan_domisili" readonly>
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden"
+																	id="kelurahan_domisili" name="kelurahan_domisili" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Alamat<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="alamat_domisili"
+																	name="alamat_domisili" readonly>
+															</div>
+														</div>
+														<div class="row" hidden>
+															<div class="col-md-12 text-right">
+																<a href="#" class="btn btn-primary" id="domisilEdit">Edit Data Pribadi</a>
+																<a href="#" class="btn btn-success" id="domisiliSimpan">Simpan Data Pribadi</a>
+																<a href="#" class="btn btn-danger" id="domisiliCancel">Batal</a>
+															</div>
+														</div>
+													</div>
+													<!-- Data Domisili Stop -->
+
+													<!-- Data Alamat Utama Start -->
+													<hr>
+													<div id="data-alamat-utama">
+														<h5>
+															Data Alamat Utama
+														</h5>
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Provinsi<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text"
+																	id="nama_provinsi_utama" name="nama_provinsi_utama" readonly>
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden" id="provinsi_utama"
+																	name="provinsi_utama" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Kota<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="nama_kota_utama"
+																	name="nama_kota_utama" readonly>
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden" id="kota_utama"
+																	name="kota_utama" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Kecamatan<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text"
+																	id="nama_kecamatan_utama" name="nama_kecamatan_utama" readonly>
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden" id="kecamatan_utama"
+																	name="kecamatan_utama" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Kelurahan<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text"
+																	id="nama_kelurahan_utama" name="nama_kelurahan_utama" readonly>
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="hidden" id="kelurahan_utama"
+																	name="kelurahan_utama" readonly>
+															</div>
+														</div>
+
+														<div class="row">
+															<div class="col-sm-6 col-6">
+																Alamat<span class="pull-right">:</span>
+															</div>
+															<div class="col-sm-6 col-6 form-group">
+																<input class="form-control-plaintext"
+																	style="padding-top: 0 !important;font-weight: 100;" type="text" id="alamat_utama"
+																	name="alamat_utama" readonly>
+															</div>
+														</div>
+														<div class="row" hidden>
+															<div class="col-md-12 text-right">
+																<button class="btn btn-primary">Edit Alamat Utama</button>
+															</div>
+														</div>
+													</div>
+													<!-- Data Alamat Utama Start -->
+												</div>
+											</form>
+										</div>
+									</div>
+									<!-- konten data pribadi stop-->
+
+									<div id="profile-settings" class="tab-pane fade">
+										<div class="pt-3">
+											<div class="row text-right">
+												<div class="col-sm-12 col-12 form-group">
+													<button class="btn btn-warning" id="gantiPassword">Ganti Password</button>
+												</div>
+											</div>
+											<form id="frmAkun">
+												<div class="row">
+													<div class="col-sm-6 col-6">
+														Username<span class="pull-right">:</span>
+													</div>
+													<div class="col-sm-6 col-6 form-group">
+														<input class="account form-control-plaintext"
+															style="padding-top: 0 !important;font-weight: 100;" type="text" id="username"
+															name="username" readonly>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-sm-6 col-6">
+														Email<span class="pull-right">:</span>
+													</div>
+													<div class="col-sm-6 col-6 form-group">
+														<input class="account form-control-plaintext"
+															style="padding-top: 0 !important;font-weight: 100;" type="text" id="email" name="email"
+															readonly>
+													</div>
+												</div>
+
+											</form>
+											<div class="row">
+												<div class="col-12 text-sm">
+													<span>*ketika anda mengubah data <b>akun</b>(termasuk update password), anda akan diarahkan
+														langsung ke halaman login</span>
+												</div>
+											</div>
+											<div class="row text-right">
+												<div class="col-sm-12 col-12 form-group">
+													<button class="btn btn-primary" id="editAkun">Edit Akun</button>
+													<button class="btn btn-success" id="saveAkun">Simpan Akun</button>
+													<button class="btn btn-warning" id="batalSave">Cancel Akun</button>
+												</div>
+											</div>
+
+										</div>
+									</div>
+
+									<div id="family" class="tab-pane fade">
+										<br>
+										<div class="row ">
+											<div class="col-12 text-right">
+												<button class="btn btn-primary" id="btnAddKeluarga">Tambah Data Keluarga</button>
+											</div>
+										</div>
+										<div class="widget-media best-doctor pt-4">
+											<div class="timeline row">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Modal -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- modal detail rekam medis -->
+<div class="modal fade bd-example-modal-lg" id="modalDetailRekamMedis" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Detail Rawat Jalan</h5>
+			</div>
+			<div class="modal-body" style="font-size: smaller;">
+				ID Rawat Jalan
+				<h5 class="modal-title" id="admssionID"></h5>
+				<table class="table table-hover table-bordered">
+					<tr>
+						<th>Dokter</th>
+						<td id="dokter"></td>
+					</tr>
+					<tr>
+						<th>Gejala</th>
+						<td id="gejala"></td>
+					</tr>
+					<tr>
+						<th>Diagnosa</th>
+						<td id="diagnosa"></td>
+					</tr>
+					<tr>
+						<th>Tindakan</th>
+						<td id="tindakan">
+						</td>
+					</tr>
+					<tr>
+						<th>Tanggal Rawat Jalan</th>
+						<td id="tglAdmision">
+						</td>
+					</tr>
+					<tr>
+						<th>Faskes</th>
+						<td id="faskes">
+						</td>
+					</tr>
+					<tr>
+						<th>Poli</th>
+						<td id="poli">Nama Poli</td>
+					</tr>
+				</table>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal detail rekam medis  stop -->
+
+<!-- modal points -->
+<div class="modal fade bd-example-modal-md" id="modalPoints" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">History Point</h5>
+			</div>
+			<div class="modal-body" style="font-size: smaller;">
+				<table class="table table-hover table-bordered" id="historyPoint">
+					<thead>
+						<th>Tanggal</th>
+						<th>Service</th>
+						<th>Point</th>
+						<th>Total Point</th>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal points stop -->
+
+<!-- modal alamat -->
+<div class="modal fade bd-example-modal-md" id="modalAlamat" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">History Point</h5>
+			</div>
+			<div class="modal-body" style="font-size: smaller;">
+				<div class="row">
+					<div class="col-sm-6 col-6">
+						Tanggal Lahir<span class="pull-right">:</span>
+					</div>
+					<div class="col-sm-6 col-6 form-group">
+						<select class="form-control" id="listkelurahan"></select>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal alamat stop -->
+<!-- modal ganti password -->
+<div class="modal fade" id="modalUpdatePassword">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<form id="gantiPassword">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Ubah Password</h5>
+					<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-6 col-6">
+							Password Lama<span class="pull-right">:</span>
+						</div>
+						<div class="col-sm-6 col-6 form-group">
+							<input class="account form-control" style="padding-top: 0 !important;font-weight: 100;" type="password"
+								id="password" name="password">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 col-6">
+							Password Baru<span class="pull-right">:</span>
+						</div>
+						<div class="col-sm-6 col-6 form-group">
+							<input class="account form-control" style="padding-top: 0 !important;font-weight: 100;" type="password"
+								id="newpassword" name="new_password">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6 col-6">
+							Konfirmasi Password Baru<span class="pull-right">:</span>
+						</div>
+						<div class="col-sm-6 col-6 form-group">
+							<input class="account form-control" style="padding-top: 0 !important;font-weight: 100;" type="password"
+								id="konf_password" name="konf_password">
+							<span id="konfpass">konfirmasi password gagal</span>
+						</div>
+					</div>
+				</div>
+				<div class="row container">
+					<div class="col-12">
+						<h6>Jika password anda berhasil, maka anda akan langsung di arahkan ke halaman login</h6>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="btn-updatepassword">Ganti Password</button>
+					<button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- modal ganti password -->
+<!-- modal tambah keluarga -->
+<div class="modal fade" id="mdlTambahKeluarga">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Tambah Keluarga</h5>
+				<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<form id="tmbhKeluarga">
+					<div class="row">
+						<div class="col-sm-6 col-6">
+							Username<span class="pull-right">:</span>
+						</div>
+						<div class="col-sm-6 col-6 form-group">
+							<input required class="form-control" type="text" name="username">
+							<span style="font-size: x-small;">*password default adalah 123456, segera ganti password setelah
+								login</span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6 col-6">
+							Nama<span class="pull-right">:</span>
+						</div>
+						<div class="col-sm-6 col-6 form-group">
+							<input required class="form-control" type="text" name="nama">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6 col-6">
+							Hubungan Keluarga<span class="pull-right">:</span>
+						</div>
+						<div class="col-sm-6 col-6 form-group">
+							<!-- <input required class="form-control" type="text" name="hubungan_keluarga"> -->
+
+							<select class="form-select form-control" aria-label="Default select example" name="hubungan_keluarga">
+								<option selected>Pilih Hubungan Keluarga</option>
+								<option value="ayah">Ayah</option>
+								<option value="ibu">Ibu</option>
+								<option value="istri">Istri</option>
+								<option value="anak">Anak</option>
+								<option value="lainnya">Lainnya</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12 text-right">
+							<button class="btn btn-primary" id="simpanDataKeluarga">Simpan Data</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal tambah keluarga -->
+<!-- modal edit poto start -->
+<div class="modal fade" id="editPoto">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content modaol-sm">
+			<div class="modal-header">
+				<form id="updatePoto">
+					<div class="row">
+						<div class="col-12 pull-center">
+							<div class="form-group">
+								<input type="file" alt="" id="poto" class="form-control-file">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12 text-center">
+							<button class="btn btn-primary">Ubah Gambar</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal edit poto stop -->
+{% endblock %} {% block js %}
+<script src="{% static 'pasien/js/dashboard.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{% static 'pasien/js/newprofile.js' %}"></script>
+{% endblock %}
